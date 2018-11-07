@@ -51,26 +51,26 @@ function get() {
 3.如果发送请求的同时，还想获取数据，那么代码如下
 
 ```java
-	//执行get请求
-	function get() {
-		
-		//1. 创建xmlhttprequest 对象
-		var request = ajaxFunction();
-		
-		//2. 发送请求
-		request.open("GET" ,"/day16/DemoServlet01?name=aa&age=18" ,true );
-		
-		//3. 获取响应数据 注册监听的意思。  一会准备的状态发生了改变，那么就执行 = 号右边的方法
-		request.onreadystatechange = function(){
-			
-			//前半段表示 已经能够正常处理。  再判断状态码是否是200
-			if(request.readyState == 4 && request.status == 200){
-				//弹出响应的信息
-				alert(request.responseText);
-			}
+//执行get请求
+function get() {
+
+	//1. 创建xmlhttprequest 对象
+	var request = ajaxFunction();
+
+	//2. 发送请求
+	request.open("GET" ,"/day16/DemoServlet01?name=aa&age=18" ,true );
+
+	//3. 获取响应数据 注册监听的意思。  一会准备的状态发生了改变，那么就执行 = 号右边的方法
+	request.onreadystatechange = function(){
+
+		//前半段表示 已经能够正常处理。  再判断状态码是否是200
+		if(request.readyState == 4 && request.status == 200){
+			//弹出响应的信息
+			alert(request.responseText);
 		}
-		request.send();
 	}
+	request.send();
+}
 ```
 
 ### 数据请求 Post
@@ -209,29 +209,29 @@ $(function(){
 ```java
 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-request.setCharacterEncoding("utf-8");
-try {
-	//1. 先获取参数
-	String word = request.getParameter("word");
-	System.out.println("word="+word);
+	request.setCharacterEncoding("utf-8");
+	try {
+		//1. 先获取参数
+		String word = request.getParameter("word");
+		System.out.println("word="+word);
 
-	//2. 让dao执行查询
-	WordsDao dao = new WordsDaoImpl();
-	List<WordBean> list = dao.findWords(word);
+		//2. 让dao执行查询
+		WordsDao dao = new WordsDaoImpl();
+		List<WordBean> list = dao.findWords(word);
 
-	for (WordBean wordBean : list) {
-		System.out.println("==="+wordBean.toString());
+		for (WordBean wordBean : list) {
+			System.out.println("==="+wordBean.toString());
+		}
+
+		request.setAttribute("list", list);
+
+		//3. 返回数据
+		response.setContentType("text/html;charset=utf-8");
+		//response.getWriter().write("数据是：");
+		request.getRequestDispatcher("list.jsp").forward(request, response);
+	} catch (SQLException e) {
+		e.printStackTrace();
 	}
-
-	request.setAttribute("list", list);
-
-	//3. 返回数据
-	response.setContentType("text/html;charset=utf-8");
-	//response.getWriter().write("数据是：");
-	request.getRequestDispatcher("list.jsp").forward(request, response);
-} catch (SQLException e) {
-	e.printStackTrace();
-}
 
 }
 ```
@@ -281,16 +281,16 @@ try {
 ### XStream的使用
 ```java
 //3. 返回数据。手动拼  ---> XStream  转化 bean对象成 xml
-	XStream xStream = new XStream();
+XStream xStream = new XStream();
 
-	//想把id做成属性
-	xStream.useAttributeFor(CityBean.class, "id");
+//想把id做成属性
+xStream.useAttributeFor(CityBean.class, "id");
 
-	//设置别名
-	xStream.alias("city", CityBean.class);
+//设置别名
+xStream.alias("city", CityBean.class);
 
-	//转化一个对象成xml字符串
-	String xml = xStream.toXML(list);
+//转化一个对象成xml字符串
+String xml = xStream.toXML(list);
 ```
 
 ### JS代码
@@ -380,30 +380,30 @@ serlvet代码：
 ```java
 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-try {
-	//1. 获取参数
-	int pid = Integer.parseInt(request.getParameter("pid"));
+	try {
+		//1. 获取参数
+		int pid = Integer.parseInt(request.getParameter("pid"));
 
-	//2 找出所有的城市
-	CityDao dao = new CityDaoImpl();
-	List<CityBean> list = dao.findCity(pid);
+		//2 找出所有的城市
+		CityDao dao = new CityDaoImpl();
+		List<CityBean> list = dao.findCity(pid);
 
-	//3. 把list ---> json数据
-	//JSONArray ---> 变成数组 ， 集合  []
-	//JSONObject ---> 变成简单的数据  { name : zhangsan , age:18}
+		//3. 把list ---> json数据
+		//JSONArray ---> 变成数组 ， 集合  []
+		//JSONObject ---> 变成简单的数据  { name : zhangsan , age:18}
 
-	JSONArray jsonArray = JSONArray.fromObject(list);
-	String json = jsonArray.toString();
-
-
-	response.setContentType("text/html;charset=utf-8");
-	response.getWriter().write(json);
+		JSONArray jsonArray = JSONArray.fromObject(list);
+		String json = jsonArray.toString();
 
 
-} catch (SQLException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-};
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().write(json);
+
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	};
 }
 ```
 
