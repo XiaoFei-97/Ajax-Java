@@ -160,7 +160,7 @@ function post() {
 <center>
 <h2>黑马</h2>
 	<input type="text" name="word" id="word" style="width: 600px ; height: 50px  ;font-size: 20px;">
-	<input type="button" value="黑马一下"  style="height: 55px ; width: 100px ; ">
+	<input type="button" value="搜索一下"  style="height: 55px ; width: 100px ; ">
 
 	<div id="div01" style="position:relative; left : -54px; width: 600px; height: 200px ; border:  1px solid blue; display: none"></div>
 </center>
@@ -300,7 +300,7 @@ $(function() {
 	//1。找到省份的元素
 	$("#province").change(function() {
 		//2. 一旦里面的值发生了改变，那么就去请求该省份的城市数据
-		//$("#province").varl();
+		//$("#province").val();
 		var pid = $(this).val();
 
 		/*<list>
