@@ -2,7 +2,7 @@
 
 
 1.创建对象
-```java
+```javascript
 function  ajaxFunction(){
    var xmlHttp;
    try{ // Firefox, Opera 8.0+, Safari
@@ -26,7 +26,7 @@ function  ajaxFunction(){
 
 2. 发送请求
 
-```java
+```javascript
 //执行get请求  
 function get() {
 
@@ -50,7 +50,7 @@ function get() {
 
 3.如果发送请求的同时，还想获取数据，那么代码如下
 
-```java
+```javascript
 //执行get请求
 function get() {
 
